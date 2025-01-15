@@ -1,0 +1,8 @@
+[llm]
+url='http://100.99.54.84:11434/v1'
+key='ollama'
+model='general_small'
+
+[gotify]
+url='https://gotify.example.com'
+key='1234567890'

@@ -1,0 +1,27 @@
+name: Test
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "**/src/template_python/**.py"
+      - "**/pyproject.toml"
+
+jobs:
+  build:
+    runs-on: '${{ matrix.os }}'
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v4
+
+      - name: 📦 Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: 🦾 Install the project
+        run: uv sync --group test
+
+      - name: 🧪 Test
+        run: uv run pytest .

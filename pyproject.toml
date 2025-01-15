@@ -1,0 +1,49 @@
+[project]
+name = "template_python"
+version = "0.0.1"
+requires-python = ">=3.12.0"
+authors = [{name = "Arun Kishore", email = "pypi@rpakishore.co.in"}]
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = ["License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)"]
+dependencies = [
+    "ollama>=0.4.4",
+    "pydantic>=2.10.4",
+    "instructor>=1.7.0",
+    "openai>=1.58.1",
+    "tiktoken>=0.8.0",
+    "ak-requests",
+    "rich>=13.9.4",
+    "typer>=0.15.1",
+    "cryptography>=44.0.0",
+]
+
+[project.urls]
+Home = "https://github.com/rpakishore/template_python"
+
+[project.scripts]
+cli="template_python.cli_app:app"
+config="template_python.cli_app:test"
+
+[tool.setuptools.dynamic]
+description = {file = "README.md"}
+
+[tool.uv.sources]
+ak-requests = { git = "https://github.com/rpakishore/ak_requests" }
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.29.5",
+    "ipywidgets>=8.1.5",
+    "pdoc>=15.0.1",
+    "ruff>=0.9.1",
+]
+
+test = [
+    "pytest>=8.3.4",
+    "pytest-cov>=6.0.0",
+]
+
+[tool.uv]
+default-groups = ["dev"]
+package = true
