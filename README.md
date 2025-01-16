@@ -2,7 +2,7 @@
 <div align="center">
   <h1>pdoc_ai</h1>
   <p>
-    A Template Description
+    Automated Python documentation generator
   </p>
   <a href="https://rpakishore.github.io/pdoc_ai/pdoc_ai.html"> Documentation</a>
 </div>
@@ -24,9 +24,10 @@
 <!-- Features -->
 ## Features
 
-- Feature 1
-- Feature 2
-- Feature 3
+- CLI commands to document packages and files
+- Automatic docstring generation in Google format
+- Support for excluding specific files or patterns
+- Integration with LLM for enhanced documentation
 
 <!-- Getting Started -->
 ## Getting Started
@@ -39,11 +40,17 @@ Python 3.12 or above
 <!-- Usage -->
 ## Usage
 
-```python
-from pdoc_ai import debug, test_config
-debug(True) #For debug messages, Can be skipped.
+To use pdoc_ai, install the package and run the CLI commands. For example:
 
-test_config() # Test if config.toml has been correctly set up
+```bash
+# Document an entire package
+python -m pdoc_ai.cli_app package /path/to/your/package
+
+# Document a specific file
+python -m pdoc_ai.cli_app file /path/to/your/package your_file.py
+
+# Clean up generated files
+python -m pdoc_ai.cli_app clean /path/to/your/package
 ```
 
 <!-- Roadmap -->

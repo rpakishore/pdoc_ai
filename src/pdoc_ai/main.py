@@ -24,8 +24,9 @@ def document(
         llm_key (str, optional): The key used to authenticate with the language model API. Defaults to "ollama".
         llm_model (str, optional): The name of the language model to use. Defaults to "code_assist_large".
     """
-    pyfile = Path(pyfile)
-    assert pyfile.is_file()
+    if pyfile is not None:
+        pyfile = Path(pyfile)
+        assert pyfile.is_file()
     llm = LLM(base_url=llm_baseurl, model=llm_model, key=llm_key)
 
     USER_MSG: str = """

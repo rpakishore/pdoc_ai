@@ -30,4 +30,13 @@ elif choice.strip().lower() == "clear":
         file.unlink()
         print(f"Removed: {str(file).replace(str(package_path), "")}")
 else:
-    document(package=package_path, pyfile=choice, **config)
+    filepath = Path(choice)
+    assert filepath.is_file()
+    if filepath.suffix == ".md":
+        from pdoc_ai.readme import update_readme
+
+        update_readme(package=package_path, readme=filepath, **config)
+    elif filepath.suffix == ".py":
+        document(package=package_path, pyfile=filepath, **config)
+    else:
+        raise Exception("Unexpected file type")

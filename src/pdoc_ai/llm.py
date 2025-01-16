@@ -10,12 +10,19 @@ import instructor
 from ollama import Client
 from openai import OpenAI
 from openai.types.chat import ChatCompletion
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 _StructuredOutput = TypeVar("_StructuredOutput", bound=BaseModel)
 
 
 class LLM:
+    """A class to interact with language models for generating responses.
+
+    Attributes:
+        last_completion (dict): A dictionary to store the last completion token usage.
+        SYSTEM (str): A system message to guide the assistant's behavior.
+    """
+
     last_completion = {"prompt": 0, "completion": 0}
     SYSTEM: str = "You are a helpful assistant."
 
