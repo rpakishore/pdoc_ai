@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 import pytest
 
-from template_python.utils.config_parser import Config
+from pdoc_ai.utils.config_parser import Config
 
 
 @pytest.fixture

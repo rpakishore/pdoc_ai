@@ -3,7 +3,7 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - "**/src/template_python/**.py"
+      - "**/src/pdoc_ai/**.py"
       - "**/pyproject.toml"
 
 jobs:

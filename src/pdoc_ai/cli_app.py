@@ -1,7 +1,7 @@
 import typer
 from rich.console import Console
 
-from template_python import test_configs
+from pdoc_ai import test_configs
 
 app = typer.Typer()
 console = Console()

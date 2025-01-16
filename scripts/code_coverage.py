@@ -25,7 +25,7 @@ run_cmd(
         "--group",
         "test",
         "pytest",
-        "--cov=template_python",
+        "--cov=pdoc_ai",
         f"--cov-report=html:{code_coverage_path}",
     ]
 )

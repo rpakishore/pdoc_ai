@@ -8,8 +8,7 @@ from openai import OpenAI
 from openai.types.chat import ChatCompletion
 from pydantic import BaseModel
 
-from template_python.utils.config_parser import config
-from template_python.utils.logger import log
+from pdoc_ai.utils.logger import log
 
 _StructuredOutput = TypeVar("_StructuredOutput", bound=BaseModel)
 
@@ -18,15 +17,19 @@ class LLM:
     last_completion = {"prompt": 0, "completion": 0}
     SYSTEM: str = "You are a helpful assistant."
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(
+        self,
+        base_url: str = "http://100.99.54.84:11434/v1",
+        model: str = "general_small",
+        key: str = "ollama",
+        **kwargs,
+    ) -> None:
         try:
-            self.__api_base = config.get(
-                keys=("llm", "url"), default="http://100.99.54.84:11434/v1"
-            )
-            self.__model = config.get(keys=("llm", "model"), default="general_small")
+            self.__api_base = base_url
+            self.__model = model
             self.__openai = OpenAI(
                 base_url=self.__api_base,
-                api_key=config.get(keys=("llm", "url"), default="ollama"),
+                api_key=key,
                 **kwargs,
             )
             self.__instructor = instructor.from_openai(

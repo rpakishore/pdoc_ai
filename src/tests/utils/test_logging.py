@@ -5,12 +5,12 @@ from unittest.mock import patch
 
 import pytest
 
-from template_python.utils.logger import Log
+from pdoc_ai.utils.logger import Log
 
 
 @pytest.fixture
 def mock_paths():
-    with patch("template_python.paths") as mock_paths:
+    with patch("pdoc_ai.paths") as mock_paths:
         mock_paths.dir_src = Path("/mock/src")
         yield mock_paths
 

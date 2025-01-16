@@ -1,6 +1,6 @@
 from random import randint
 
-from template_python.cryptography import obscure, unobscure
+from pdoc_ai.cryptography import obscure, unobscure
 
 
 def test_obscure_unobscure():

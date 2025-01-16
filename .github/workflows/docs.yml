@@ -5,7 +5,7 @@ on:
   pull_request:
     branches: [main]
     paths:
-      - "**/src/template_python/**.py"
+      - "**/src/pdoc_ai/**.py"
 
 # security: restrict permissions for CI jobs.
 permissions:
@@ -26,7 +26,7 @@ jobs:
       - run: pip install pdoc
       # ADJUST THIS: build your documentation into docs/.
       # We use a custom build script for pdoc itself, ideally you just run `pdoc -o docs/ ...` here.
-      - run: pdoc --docformat google --math --mermaid template_python -o docs
+      - run: pdoc --docformat google --math --mermaid pdoc_ai -o docs
 
       - uses: actions/upload-pages-artifact@v3
         with:
