@@ -1,3 +1,7 @@
+"""
+LLM class for interacting with language models.
+"""
+
 from functools import cached_property
 from pathlib import Path
 from typing import Type, TypeVar
@@ -7,8 +11,6 @@ from ollama import Client
 from openai import OpenAI
 from openai.types.chat import ChatCompletion
 from pydantic import BaseModel
-
-from pdoc_ai.utils.logger import log
 
 _StructuredOutput = TypeVar("_StructuredOutput", bound=BaseModel)
 
@@ -24,7 +26,17 @@ class LLM:
         key: str = "ollama",
         **kwargs,
     ) -> None:
+        """
+        Initialize the LLM class with specified parameters.
+
+        Args:
+            base_url (str): The base URL for the language model API.
+            model (str): The name of the language model to use.
+            key (str): The API key to authenticate with.
+            **kwargs: Additional keyword arguments to pass to OpenAI or Ollama clients.
+        """
         try:
+
             self.__api_base = base_url
             self.__model = model
             self.__openai = OpenAI(
@@ -43,7 +55,7 @@ class LLM:
                 self.__ollama = Client(host=_host)
 
         except Exception as e:
-            log.critical(f"Exception in `LLM.__init__({kwargs=})`\n{e}")
+            print(f"Exception in `LLM.__init__({kwargs=})`\n{e}")
             raise e
 
     def response(
@@ -73,18 +85,14 @@ class LLM:
             if _inputs["stream"]:
                 res_text = ""
                 for chunk in response:
-                    if res_text == "":
-                        log.debug("Streaming response started.")
                     res_text += chunk.choices[0].delta.content or ""
             else:
                 res_text = response.choices[0].message.content
                 self.__update_token_usage(response=response)
-            log.info("Chat response received")
-            log.debug(f"Response: {res_text}")
             return res_text
         except Exception as e:
-            log.critical(f"Error encountered in `LLM.response({_inputs=})`")
-            log.critical(str(e))
+            print(f"Error encountered in `LLM.response({_inputs=})`")
+            print(str(e))
             raise e
 
     def structured_response(
@@ -114,33 +122,54 @@ class LLM:
         try:
             return self.__instructor.chat.completions.create(**_inputs)
         except Exception as e:
-            log.critical(f"Exception in `LLM.structured_response({_inputs=})`\n{e}")
+            print(f"Exception in `LLM.structured_response({_inputs=})`\n{e}")
             raise e
 
     @cached_property
     def models(self) -> list[str]:
-        """Get the list of available models"""
+        """
+        Get a list of available models from the language model API.
+
+        Returns:
+            list[str]: A list of model names.
+        """
         try:
             return [x.id for x in self.__openai.models.list().data]
         except Exception as e:
-            log.critical("Exception in `LLM.models`\n{e}")
+            print("Exception in `LLM.models`\n{e}")
             raise e
 
     def __update_token_usage(self, response: ChatCompletion):
+        """
+        Update the token usage statistics for the last completion.
+
+        Args:
+            response (ChatCompletion): The response from the language model containing token usage information.
+        """
         self.last_completion = {
             "prompt": response.usage.completion_tokens,
             "completion": response.usage.prompt_tokens,
         }
 
     def msg(self, user_content: str) -> list[dict[str]]:
-        """Generate `messages` based on default `self.SYSTEM` message]"""
+        """
+        Create a message structure for the language model.
+
+        Args:
+            user_content (str): The content of the user's message.
+
+        Returns:
+            list[dict[str]]: A structured message list ready to be sent to the language model.
+        """
         return [
             {"role": "system", "content": self.SYSTEM},
             {"role": "user", "content": user_content},
         ]
 
     def unload_all(self) -> None:
-        """Unload all models from VRAM"""
+        """
+        Unload all models from the language model API to free up resources.
+        """
         for model in self.loaded_models:
             self.__ollama.chat(
                 model=model, messages=[{"role": "user", "content": ""}], keep_alive=0
@@ -149,7 +178,12 @@ class LLM:
 
     @property
     def loaded_models(self) -> list[str]:
-        """List the models loaded to VRAM"""
+        """
+        Get a list of currently loaded models in the language model API.
+
+        Returns:
+            list[str]: A list of model names.
+        """
         if self.__ollama is not None:
             return [modelinfo.model for modelinfo in self.__ollama.ps().models]
         return []

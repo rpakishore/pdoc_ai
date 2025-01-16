@@ -22,8 +22,7 @@ dependencies = [
 Home = "https://github.com/rpakishore/pdoc_ai"
 
 [project.scripts]
-cli="pdoc_ai.cli_app:app"
-config="pdoc_ai.cli_app:test"
+document="pdoc_ai.cli_app:app"
 
 [tool.setuptools.dynamic]
 description = {file = "README.md"}

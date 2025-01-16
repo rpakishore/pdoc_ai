@@ -4,11 +4,17 @@ from typing import Any, Callable
 
 
 def retry_on_exception(retries: int = 3, delay: float = 1) -> Callable:
-    """Attempt to call a function, if it fails, try again with a specified delay.
+    """Decorator to retry a function on exception with a specified delay between retries.
 
-    :param retries: The max amount of retries you want for the function call
-    :param delay: The delay (in seconds) between each function retry
-    :return:
+    Args:
+        retries (int): Number of times to retry the function in case of an exception.
+        delay (float): Time interval (in seconds) to wait before retrying the function.
+
+    Raises:
+        ValueError: If `retries` is less than 1 or `delay` is less than or equal to 0.
+
+    Returns:
+        Callable: The decorated function.
     """
 
     # Don't let the user use this decorator if they are high
@@ -40,6 +46,15 @@ def retry_on_exception(retries: int = 3, delay: float = 1) -> Callable:
 
 
 def time_it(func: Callable) -> Callable:
+    """Decorator to measure the execution time of a function.
+
+    Args:
+        func (Callable): The function to be timed.
+
+    Returns:
+        Callable: The decorated function.
+    """
+
     @wraps(func)
     def wrapper(*args, **kwargs) -> Any:
         # Note that timing your code once isn't the most reliable option
