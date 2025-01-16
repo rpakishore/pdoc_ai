@@ -2,7 +2,7 @@ name: website
 
 # build the documentation whenever there are new commits on main
 on:
-  pull_request:
+  push:
     branches: [main]
     paths:
       - "**/src/pdoc_ai/**.py"
